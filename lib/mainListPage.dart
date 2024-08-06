@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 
-import 'package:spaghetti/sensorService.dart';
+import 'sensorService.dart';
 
 class MainListPage extends StatefulWidget {
   const MainListPage({super.key});
@@ -75,54 +75,66 @@ class _MyWidgetState extends State<MainListPage> {
                     top: screenHeight * 0.23 + 30, // "이전 수업" 텍스트 아래 30px
                     left: screenWidth * 0.1,
                     child: SizedBox(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.45, // 목록을 위한 높이 조정
-                      child: ListView.builder(
-                        controller: _scrollController, // ScrollController 추가
-                        padding: EdgeInsets.zero, // ListView의 패딩을 없앰
-                        itemCount: senserList.length,
-                        itemBuilder: (context, index) {
-                          SensorData sensor = senserList[index];
-                          return Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  children: [
-                                    // 작은 아이콘 추가
-                                    SizedBox(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text(
-                                              sensor.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 16.0, // 텍스트 크기 설정
-                                                fontWeight:
-                                                    FontWeight.bold, // 폰트 굵기 설정
-                                                color: Colors.black, // 폰트 색상 설정
-                                                fontFamily:
-                                                    'NanumB', // 폰트 패밀리 설정
+                        width: screenWidth * 0.8,
+                        height: screenHeight * 0.45, // 목록을 위한 높이 조정
+                        child: GridView.builder(
+                          controller: _scrollController, // ScrollController 추가
+                          padding: EdgeInsets.zero, // GridView의 패딩을 없앰
+                          itemCount: senserList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // 2열로 설정
+                            childAspectRatio: (screenWidth / 2) /
+                                (screenHeight * 0.15), // 항목의 가로 세로 비율 설정
+                            crossAxisSpacing: 10, // 열 간의 간격
+                            mainAxisSpacing: 50, // 행 간의 간격
+                          ),
+                          itemBuilder: (context, index) {
+                            SensorData sensor = senserList[index];
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    children: [
+                                      // 작은 아이콘 추가
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: screenWidth * 0.3,
+                                              height: screenHeight * 0.15,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
+                                                    blurRadius: 10,
+                                                    offset: Offset(0, 5),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          )
-                                        ],
+                                              child: Center(
+                                                child: Text(sensor.name),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                              ],
+                            );
+                          },
+                        )),
                   ),
 
                   Positioned(
