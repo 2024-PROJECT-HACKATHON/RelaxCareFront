@@ -26,18 +26,18 @@ class _MyWidgetState extends State<MainListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SensorService>(builder: (context, sensorService, child) {
-      List<SensorData> senserList = sensorService.senserList;
+    return Consumer<SensorService>(
+      builder: (context, sensorService, child) {
+        List<SensorData> senserList = sensorService.senserList;
 
-      final mediaQuery = MediaQuery.of(context);
-      final screenHeight = mediaQuery.size.height;
-      final screenWidth = mediaQuery.size.width;
+        final mediaQuery = MediaQuery.of(context);
+        final screenHeight = mediaQuery.size.height;
+        final screenWidth = mediaQuery.size.width;
 
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: PageView(
-          children: [
-            Container(
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Container(
               child: Stack(
                 children: [
                   Positioned(
@@ -69,99 +69,98 @@ class _MyWidgetState extends State<MainListPage> {
                     child: Text('오늘도 건강하게 하루를 보내고 계십니다',
                         style: TextStyle(fontSize: screenWidth * 0.05)),
                   ),
-                  Positioned(
-                    top: screenHeight * 0.28,
-                    left: screenWidth * 0.1,
-                    child: SizedBox(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.45,
-                      child: GridView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.zero,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.0,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                        ),
-                        itemCount: senserList.length,
-                        itemBuilder: (context, index) {
-                          SensorData sensor = senserList[index];
-                          return GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                    ),
-                                    contentPadding: EdgeInsets.all(20),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          sensor.name,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(sensor.date),
-                                        SizedBox(height: 10),
-                                        Text(sensor.detailText),
-                                      ],
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('닫기'),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GridView.builder(
+                          controller: _scrollController,
+                          padding: EdgeInsets.zero,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 1.0,
+                            crossAxisSpacing: 10.0,
+                            mainAxisSpacing: 10.0,
+                          ),
+                          itemCount: senserList.length,
+                          itemBuilder: (context, index) {
+                            SensorData sensor = senserList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
                                       ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.sensor_window),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    sensor.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      fontFamily: 'NanumB',
+                                      contentPadding: EdgeInsets.all(20),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            sensor.name,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(sensor.date),
+                                          SizedBox(height: 10),
+                                          Text(sensor.detailText),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('닫기'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.sensor_window),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      sensor.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontFamily: 'NanumB',
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    sensor.date,
-                                    style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.grey,
+                                    SizedBox(height: 4),
+                                    Text(
+                                      sensor.date,
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.grey,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   Positioned(
                     right: screenWidth * 0.1,
@@ -245,9 +244,9 @@ class _MyWidgetState extends State<MainListPage> {
                 ],
               ),
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 }
