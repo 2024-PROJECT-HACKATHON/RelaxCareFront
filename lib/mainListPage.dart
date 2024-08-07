@@ -4,6 +4,8 @@ import 'package:spaghetti/alarm.dart';
 import 'package:spaghetti/homeAlert.dart';
 import 'package:spaghetti/sensorService.dart';
 
+import 'senserDetail.dart';
+
 class MainListPage extends StatefulWidget {
   const MainListPage({super.key});
 
@@ -176,7 +178,7 @@ class _MyWidgetState extends State<MainListPage> {
                       width: screenWidth * 0.075,
                     ),
                     Container(
-                      height: 3,
+                      height: 2,
                       width: screenWidth * 0.85,
                       color: Colors.black,
                     ),
@@ -202,67 +204,69 @@ class _MyWidgetState extends State<MainListPage> {
                       ),
                       itemBuilder: (context, index) {
                         SensorData sensor = senserList[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 10,
-                                offset: Offset(0, 5),
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(60.0),
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: screenWidth * 0.025,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenWidth * 0.025,
-                                  ),
-                                  Image.asset(
-                                    sensor.sensorImage,
-                                    width: screenWidth * 0.1,
-                                    height: screenWidth * 0.1,
-                                  ),
-                                  SizedBox(
-                                    width: screenWidth * 0.15,
-                                  ),
-                                  Text(sensor.name)
-                                ],
-                              ),
-                              SizedBox(
-                                height: screenWidth * 0.05,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenWidth * 0.025,
-                                  ),
-                                  Expanded(
-                                    child: Text(sensor.date,
-                                        style: TextStyle(color: Colors.grey)),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenWidth * 0.025,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      sensor.detailText,
+                              builder: (context) =>
+                                  SensorDetail(sensor: sensor),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: sensor.issueLevel == 0
+                                  ? Colors.white
+                                  : Colors.red,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: screenWidth * 0.025),
+                                Row(
+                                  children: [
+                                    SizedBox(width: screenWidth * 0.025),
+                                    Image.asset(
+                                      sensor.sensorImage,
+                                      width: screenWidth * 0.1,
+                                      height: screenWidth * 0.1,
                                     ),
-                                  )
-                                ],
-                              )
-                            ],
+                                    SizedBox(width: screenWidth * 0.15),
+                                    Text(sensor.name)
+                                  ],
+                                ),
+                                SizedBox(height: screenWidth * 0.05),
+                                Row(
+                                  children: [
+                                    SizedBox(width: screenWidth * 0.025),
+                                    Expanded(
+                                      child: Text(sensor.date,
+                                          style: TextStyle(color: Colors.grey)),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: screenWidth * 0.025),
+                                    Expanded(
+                                      child: Text(sensor.detailText),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -277,10 +281,3 @@ class _MyWidgetState extends State<MainListPage> {
     );
   }
 }
-
-//           ],
-//         ),
-//       ),
-//     );
-//   },
-// );
