@@ -14,6 +14,7 @@ class Alarm extends StatefulWidget {
 
 class _AlarmState extends State<Alarm> {
   @override
+  List<String> temp = ["오늘", "2024 .6 1."];
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF5F6FB),
@@ -39,7 +40,7 @@ class _AlarmState extends State<Alarm> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: 2,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
@@ -51,7 +52,7 @@ class _AlarmState extends State<Alarm> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 4.0),
                           child: Text(
-                            "오늘",
+                            temp[index],
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 18,

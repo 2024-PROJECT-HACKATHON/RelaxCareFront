@@ -8,6 +8,7 @@ class HomeAlert extends StatefulWidget {
 }
 
 class _HomeAlert extends State<HomeAlert> {
+  List<String> temp = ["서울 집", "부산 집"];
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -58,7 +59,7 @@ class _HomeAlert extends State<HomeAlert> {
                                 width: screenWidth * 0.05,
                               ),
                               Text(
-                                "서울 집",
+                                temp[index],
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w800),
                               ),

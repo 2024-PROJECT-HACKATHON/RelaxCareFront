@@ -54,13 +54,13 @@ class SensorService extends ChangeNotifier {
         issueLevel: 0),
     SensorData(
         name: "동작",
-        date: "12시간전 감지",
+        date: "11시간전 감지",
         detailText: "열심히 활동하고 있으세요",
         sensorImage: "assets/images/move.png",
         sensorName: "거실 동작 감지기",
         sensorNetwork: "Iptime 2.4",
         signalPower: "-54dbm",
-        issueLevel: 2),
+        issueLevel: 0),
     SensorData(
         name: "창문",
         date: "3시간 전 감지",
@@ -71,4 +71,11 @@ class SensorService extends ChangeNotifier {
         signalPower: "-54dbm",
         issueLevel: 0),
   ];
+
+  void emarhencyState() {
+    senserList[3].date = "12시간전 동작";
+    senserList[3].detailText = "특이사항 발생";
+    senserList[3].issueLevel = 1;
+    notifyListeners();
+  }
 }

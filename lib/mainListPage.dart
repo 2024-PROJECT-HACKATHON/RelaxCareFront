@@ -15,7 +15,7 @@ class MainListPage extends StatefulWidget {
 
 class _MyWidgetState extends State<MainListPage> {
   ScrollController? _scrollController;
-
+  int temp = 0;
   @override
   void initState() {
     super.initState();
@@ -162,10 +162,24 @@ class _MyWidgetState extends State<MainListPage> {
                     SizedBox(
                       width: screenWidth * 0.3,
                     ),
-                    Image.asset(
-                      'assets/images/check.png',
-                      width: screenWidth * 0.1,
-                      height: screenWidth * 0.1,
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          sensorService.emarhencyState();
+                          temp = 1;
+                        });
+                      },
+                      child: temp == 0
+                          ? Image.asset(
+                              'assets/images/check.png',
+                              width: screenWidth * 0.1,
+                              height: screenWidth * 0.1,
+                            )
+                          : Image.asset(
+                              'assets/images/exclamation_mark.png',
+                              width: screenWidth * 0.1,
+                              height: screenWidth * 0.1,
+                            ),
                     ),
                   ],
                 ),
@@ -204,6 +218,7 @@ class _MyWidgetState extends State<MainListPage> {
                       ),
                       itemBuilder: (context, index) {
                         SensorData sensor = senserList[index];
+
                         return GestureDetector(
                           onTap: () {
                             showModalBottomSheet(
