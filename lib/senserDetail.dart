@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:spaghetti/sensorService.dart';
 
 import 'emargencyDialog.dart'; // SensorData 클래스가 정의된 파일을 임포트합니다.
@@ -31,17 +32,26 @@ class _SensorDetail extends State<SensorDetail> {
             children: [
               SizedBox(width: screenWidth * 0.02),
               Image.asset(
-                widget.sensor.sensorImage,
+                widget.sensor.image,
                 width: screenWidth * 0.1,
                 height: screenWidth * 0.1,
               ),
               SizedBox(width: screenWidth * 0.3),
-              Expanded(
-                child: Text(
-                  widget.sensor.date,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ),
+              widget.sensor.issueLevel == 1
+                  ? Expanded(
+                      child: Text(
+                        "${widget.sensor.timeStamp}가없습니다",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Expanded(
+                      child: Text(
+                        "${widget.sensor.timeStamp}가없습니다",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ),
               if (widget.sensor.issueLevel == 0)
                 Image.asset(
                   'assets/images/check.png',
@@ -65,7 +75,7 @@ class _SensorDetail extends State<SensorDetail> {
               SizedBox(width: screenWidth * 0.02),
               Expanded(
                 child: Text(
-                  widget.sensor.detailText,
+                  widget.sensor.sensorName ?? "",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -116,7 +126,7 @@ class _SensorDetail extends State<SensorDetail> {
               ),
               Expanded(
                 child: Text(
-                  widget.sensor.sensorNetwork,
+                  widget.sensor.ssId,
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
@@ -136,7 +146,7 @@ class _SensorDetail extends State<SensorDetail> {
               ),
               Expanded(
                 child: Text(
-                  widget.sensor.signalPower,
+                  widget.sensor.signalPower.toString(),
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),

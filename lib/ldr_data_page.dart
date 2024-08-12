@@ -18,7 +18,7 @@ class _LdrDataPageState extends State<LdrDataPage> {
   }
 
   Future<void> fetchLdrData() async {
-    final url = 'http://192.168.0.18:8080/api/ldr-data'; // 서버의 실제 URL을 사용하세요.
+    final url = 'http://192.168.0.2:8080/api/ldr-data';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

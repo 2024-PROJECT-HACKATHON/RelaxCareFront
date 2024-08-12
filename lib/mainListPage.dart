@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:spaghetti/alarm.dart';
 import 'package:spaghetti/homeAlert.dart';
 import 'package:spaghetti/sensorService.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'senserDetail.dart';
 
 class MainListPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MyWidgetState extends State<MainListPage> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    fetchLdrData();
   }
 
   @override
@@ -28,11 +30,34 @@ class _MyWidgetState extends State<MainListPage> {
     super.dispose();
   }
 
+  Future<void> fetchLdrData() async {
+    final url = 'http://125.176.199.86:8080/api/ldr-data/latest';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        setState(() {
+          var data = json.decode(utf8.decode(response.bodyBytes));
+          print(" test: $data");
+          Provider.of<SensorService>(context, listen: false)
+              .sensorList
+              .add(SensorData.fromJson(data));
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SensorService>(
       builder: (context, sensorService, child) {
-        List<SensorData> senserList = sensorService.senserList;
+        List<SensorData> sensorList = sensorService.sensorList;
+        sensorService.imageMatching();
+        sensorService.timechange();
+        sensorService.detectIssueLevel();
         final mediaQuery = MediaQuery.of(context);
         final screenHeight = mediaQuery.size.height;
         final screenWidth = mediaQuery.size.width;
@@ -163,20 +188,15 @@ class _MyWidgetState extends State<MainListPage> {
                       width: screenWidth * 0.3,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          sensorService.emarhencyState();
-                          temp = 1;
-                        });
-                      },
-                      child: temp == 0
+                      onTap: () {},
+                      child: sensorService.detect
                           ? Image.asset(
-                              'assets/images/check.png',
+                              'assets/images/exclamation_mark.png',
                               width: screenWidth * 0.1,
                               height: screenWidth * 0.1,
                             )
                           : Image.asset(
-                              'assets/images/exclamation_mark.png',
+                              'assets/images/check.png',
                               width: screenWidth * 0.1,
                               height: screenWidth * 0.1,
                             ),
@@ -208,7 +228,7 @@ class _MyWidgetState extends State<MainListPage> {
                     child: GridView.builder(
                       controller: _scrollController,
                       padding: EdgeInsets.zero,
-                      itemCount: senserList.length,
+                      itemCount: sensorList.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio:
@@ -217,7 +237,7 @@ class _MyWidgetState extends State<MainListPage> {
                         mainAxisSpacing: 20,
                       ),
                       itemBuilder: (context, index) {
-                        SensorData sensor = senserList[index];
+                        SensorData sensor = sensorList[index];
 
                         return GestureDetector(
                           onTap: () {
@@ -254,20 +274,21 @@ class _MyWidgetState extends State<MainListPage> {
                                   children: [
                                     SizedBox(width: screenWidth * 0.025),
                                     Image.asset(
-                                      sensor.sensorImage,
+                                      sensor.image,
                                       width: screenWidth * 0.1,
                                       height: screenWidth * 0.13,
                                     ),
                                     SizedBox(width: screenWidth * 0.15),
-                                    Text(sensor.name)
+                                    Text(sensor.sensorName)
                                   ],
                                 ),
                                 SizedBox(height: screenWidth * 0.13),
-                                Row(// 기기 정보 및 상태 표시
+                                Row(
+                                  // 기기 정보 및 상태 표시
                                   children: [
                                     SizedBox(width: screenWidth * 0.025),
                                     Expanded(
-                                      child: Text(sensor.date,
+                                      child: Text(sensor.timeStamp,
                                           style: TextStyle(color: Colors.grey)),
                                     )
                                   ],
@@ -276,7 +297,7 @@ class _MyWidgetState extends State<MainListPage> {
                                   children: [
                                     SizedBox(width: screenWidth * 0.025),
                                     Expanded(
-                                      child: Text(sensor.detailText),
+                                      child: Text(sensor.value ?? ""),
                                     )
                                   ],
                                 )
