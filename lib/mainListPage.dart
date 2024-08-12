@@ -177,18 +177,31 @@ class _MyWidgetState extends State<MainListPage> {
                     SizedBox(
                       width: screenWidth * 0.075,
                     ),
-                    Text(
-                      '오늘도 건강하게 하루를 \n보내고 계십니다',
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.04,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+                    sensorService.detect
+                        ? Text(
+                            '  위험을 감지했습니다',
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.04,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          )
+                        : Text(
+                            '오늘도 건강하게 하루를 \n보내고 계십니다',
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.04,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                     SizedBox(
                       width: screenWidth * 0.3,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          sensorService.setDetect(false);
+                          print(sensorService.detect);
+                        });
+                      },
                       child: sensorService.detect
                           ? Image.asset(
                               'assets/images/exclamation_mark.png',
@@ -279,7 +292,12 @@ class _MyWidgetState extends State<MainListPage> {
                                       height: screenWidth * 0.13,
                                     ),
                                     SizedBox(width: screenWidth * 0.15),
-                                    Text(sensor.sensorName)
+                                    Text(
+                                      sensor.sensorName,
+                                      style: sensor.issueLevel == 1
+                                          ? TextStyle(color: Colors.white)
+                                          : TextStyle(color: Colors.black),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: screenWidth * 0.13),

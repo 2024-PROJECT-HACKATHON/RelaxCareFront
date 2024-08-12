@@ -48,6 +48,11 @@ class SensorService extends ChangeNotifier {
     }
   }
 
+  void setDetect(bool value) {
+    this.detect = value;
+    notifyListeners();
+  }
+
   //이미지 맞춰주기
   void imageMatching() {
     for (int i = 0; i < sensorList.length; i++) {
