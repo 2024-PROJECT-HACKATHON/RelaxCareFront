@@ -192,7 +192,7 @@ class _MyWidgetState extends State<MainListPage> {
                       width: screenWidth * 0.075,
                     ),
                     Container(
-                      height: 2,
+                      height: 1,
                       width: screenWidth * 0.85,
                       color: Colors.black,
                     ),
@@ -212,7 +212,7 @@ class _MyWidgetState extends State<MainListPage> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio:
-                            (screenWidth / 3) / (screenHeight * 0.15),
+                            (screenWidth / 3) / (screenHeight * 0.16),
                         crossAxisSpacing: 20,
                         mainAxisSpacing: 20,
                       ),
@@ -237,7 +237,7 @@ class _MyWidgetState extends State<MainListPage> {
                               color: sensor.issueLevel == 0
                                   ? Colors.white
                                   : Colors.red,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.1),
@@ -256,14 +256,14 @@ class _MyWidgetState extends State<MainListPage> {
                                     Image.asset(
                                       sensor.sensorImage,
                                       width: screenWidth * 0.1,
-                                      height: screenWidth * 0.1,
+                                      height: screenWidth * 0.13,
                                     ),
                                     SizedBox(width: screenWidth * 0.15),
                                     Text(sensor.name)
                                   ],
                                 ),
-                                SizedBox(height: screenWidth * 0.05),
-                                Row(
+                                SizedBox(height: screenWidth * 0.13),
+                                Row(// 기기 정보 및 상태 표시
                                   children: [
                                     SizedBox(width: screenWidth * 0.025),
                                     Expanded(

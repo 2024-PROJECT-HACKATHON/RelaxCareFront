@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaghetti/mainListPage.dart';
 import 'package:spaghetti/sensorService.dart';
+import 'package:spaghetti/ldr_data_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SensorService()),
       ],
       child: MaterialApp(
-        home: MainListPage(),
+        home: LdrDataPage(),
         theme: ThemeData(
           fontFamily: 'NanumB',
           scaffoldBackgroundColor: Colors.white, // 전체 앱의 Scaffold 배경색을 흰색으로 설정
